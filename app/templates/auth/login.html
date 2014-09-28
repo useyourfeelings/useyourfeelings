@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="ui three column grid">
+<div class="column"></div>
+  <div class=" column">
+      {{ wtf.basic_form(form, placeholder = True) }}
+      <form method="GET" action="{{ url_for('auth.register') }}">
+      <input type = "submit" class="ui blue submit button" value="REGISTER">
+      </form>
+      <form method="GET" action="{{ url_for('auth.password_reset_request') }}">
+      <input type = "submit" class="ui red submit button" value="FORGET PASSWORD?">
+      </form>
+  </div>
+  </div>
+  <div class="column">
+
+  </div>
+  </div>
+
+
+<form method="post" class="ui form segment">
+    <div class="ui form segment">
+        <div class="field">
+            <div class="ui left labeled icon input">
+                <input type="text" placeholder="Username">
+                <i class="user icon"></i>
+                <div class="ui corner label">
+                    <i class="icon asterisk"></i>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui left labeled icon input">
+                <input type="password" placeholder="Password">
+                <i class="lock icon"></i>
+                <div class="ui corner label">
+                    <i class="icon asterisk"></i>
+                </div>
+            </div>
+        </div>
+        <div class="inline field">
+            <div class="ui checkbox">
+                <input id = "rememberme"  type="checkbox">
+                <label for = "rememberme" >remember me</label>
+            </div>
+        </div>
+        <div class="ui error message">
+            <div class="header">发生了错误</div>
+        </div>
+        <input type = "submit" class="ui blue submit button" value="登录">
+    </div>
+</form>
+
+
+<div class="ui warning form segment">
+  <div class="ui warning message">
+      <div class="header">Could you check something!</div>
+      <ul class="list">
+          <li>You forgot your <b>first name</b></li>
+          <li>And also your <b>last name</b></li>
+      </ul>
+  </div>
+  <div class="two error fields">
+      <div class="field">
+          <label>First Name</label>
+          <input placeholder="First Name" type="text">
+          <div class="ui red pointing above ui label">Enter a first name</div>
+      </div>
+      <div class="field">
+          <label>Last Name</label>
+          <input placeholder="Last Name" type="text">
+          <div class="ui red pointing above ui label">Enter a last name</div>
+      </div>
+  </div>
+  <div class="field">
+      <label>Username</label>
+      <input placeholder="Username" type="text">
+  </div>
+  <div class="field">
+      <label>Password</label>
+      <input type="password">
+  </div>
+  <div class="inline field">
+      <div class="ui checkbox">
+          <input type="checkbox">
+          <label>I agree to the Terms and Conditions</label>
+      </div>
+  </div>
+  <div class="ui blue submit button">Submit</div>
+        </div>
+
+
+{% endblock %}
+
+<script>
+
+
+//$('.ui.dropdown').form(validationRules, {
+//    inline : true,
+//    on     : 'blur'
+//});
+/*
+$('.ui.form').form({
+    firstName: {
+        identifier  : 'first-name',
+        rules: [
+            {
+                type   : 'empty',
+                prompt : 'Please enter your first name'
+            }
+        ]
+    },
+    lastName: {
+        identifier  : 'last-name',
+        rules: [
+            {
+                type   : 'empty',
+                prompt : 'Please enter your last name'
+            }
+        ]
+    },
+    username: {
+        identifier : 'username',
+        rules: [
+            {
+                type   : 'empty',
+                prompt : 'Please enter a username'
+            }
+        ]
+    },
+    password: {
+        identifier : 'password',
+        rules: [
+            {
+                type   : 'empty',
+                prompt : 'Please enter a password'
+            },
+            {
+                type   : 'length[6]',
+                prompt : 'Your password must be at least 6 characters'
+            }
+        ]
+    },
+    terms: {
+        identifier : 'terms',
+        rules: [
+            {
+                type   : 'checked',
+                prompt : 'You must agree to the terms and conditions'
+            }
+        ]
+    }
+} , {
+    inline : true,
+    on     : 'blur'
+});*/
+</script>

@@ -1,0 +1,198 @@
+{% extends "layout_blank.html" %}
+
+{% block source %}
+<script type="text/javascript" src="{{ url_for('static', filename = 'pagedown/Markdown.Converter.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'pagedown/Markdown.Sanitizer.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'ace-builds-master/src-noconflict/ace.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'jcubic-jquery.splitter/css/jquery.splitter.css') }}" />
+<script type="text/javascript" src="{{ url_for('static', filename = 'jcubic-jquery.splitter/js/jquery.splitter-0.14.0.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'markdown_interface/markdown_interface.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'FileSaver/FileSaver.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'highlight/styles/monokai_sublime.css') }}" />
+<script type="text/javascript" src="{{ url_for('static', filename = 'highlight/highlight.pack.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    
+<div class="ui fixed transparent inverted main menu">
+<!--<div class="container">-->
+    <div class="title item">
+        <b>USE YOUR FEELINGS 0.1</b>
+    </div>
+    <div class="ui icon item">
+        <div class="ui tiny button" id="undo"><i class="undo icon"></i></div>
+        <div class="ui tiny button" id="redo"><i class="repeat icon"></i></div>
+        <div class="ui tiny button" id="dobold"><i class="bold icon"></i></div>
+        <!--<div class="ui tiny button"><i class="align center icon"></i></div>
+        <div class="ui tiny button"><i class="align left icon"></i></div>
+        <div class="ui tiny button"><i class="align right icon"></i></div>-->
+        <div class="ui tiny button" id="addurl"><i class="url icon"></i></div>
+        <div class="ui tiny button" id="addimg"><i class="photo icon"></i></div>
+        <!--<div class="ui tiny button"><i class="code icon"></i></div>-->
+    </div>
+    
+    <div class="ui icon item">
+        <div class="ui tiny button" id="newdoc"><i class="file outline icon"></i></div>
+        <!--<div class="ui tiny button"><i class="save icon"></i></div>
+        <div class="ui tiny button"><i class="open folder outline icon"></i></div>-->
+        <div class="ui tiny dropdown button">
+            <i class="share icon"></i>
+            <div class="menu">
+                <div class="item" id="exporthtml">export HTML</div>
+                <div class="item" id="exportmd">export MD</div>
+            </div>
+        </div>
+        <!--<div class="ui tiny button"><i class="setting icon"></i></div>-->
+        <div class="ui tiny button " id="help" data-content="enjoy :)" data-position="bottom center"><i class="help icon"></i></div>
+        
+    </div>
+    
+    <div class="right menu">
+        <a class="popup icon item" data-content="View project on Github" href="https://bear.today">
+            <i class="icon home"></i>
+        </a>
+        <a class="popup icon github item" data-content="View project on Github" href="https://github.com/useyourfeelings/useyourfeelings">
+            <i class="icon github"></i>
+        </a>
+        <i class="inverted red heart icon link" data-content="Bottom Center" data-position="bottom center"></i>
+    </div>
+<!--</div>-->
+</div>
+<div id = "markdown_main">
+    <div id="markdown_editor">##USE YOUR FEELINGS 0.1
+
+-----------------------
+
+> ####**HUGE thanks to the following projects:**
+
+* [**`nginx`**](http://nginx.org)
+* [**`uwsgi`**](https://github.com/unbit/uwsgi)
+* [**`flask`**](http://flask.pocoo.org) and it's nice extensions
+* [**`jquery`**](http://jquery.com)
+* [**`semantic-ui`**](http://semantic-ui.com)
+* [**`ace`**](http://ace.c9.io) need a better docucment : (
+* [**`pagedown`**](https://code.google.com/p/pagedown)
+* [**`highlight.js`**](http://highlightjs.org)
+
+> ####**and all projects i missed here : ) and of course, YOU !**
+
+----------------------
+
+* Homepage : [**`bear.today`**](http://bear.today)
+* Location : **`Shanghai China`**
+* Email : **`raidercodebear@gmail.com`**
+
+----------------------
+    </div>
+    <div id = "markdown_preview">
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<style type="text/css" media="screen">
+    #markdown_editor { 
+        position: absolute;
+        top: 0px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow-y:hidden;
+    }
+    #markdown_main { 
+        position: absolute;
+        top: 40px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height:100% - 40px;
+        overflow: hidden;
+    }
+</style>
+<script>
+    function getAllMethods(object) {
+        return Object.getOwnPropertyNames(object).filter(function(property) {
+            return true;//typeof object[property] == 'function';
+        });
+    }
+    
+    var editor = ace.edit("markdown_editor");
+    var mdi = new MDI(editor);
+    
+    var converter = new Markdown.getSanitizingConverter();
+    
+    function makePreview(){
+        $('#markdown_preview').html(converter.makeHtml(mdi.getWholeText()));
+        $('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
+    }
+    
+    mdi.setOnChangeCallback(makePreview);
+    mdi.setUseWrapMode(true);
+    mdi.setShowPrintMargin(false);
+    mdi.setFontSize(16);
+    mdi.setTheme("ace/theme/chrome");
+    mdi.setMode("ace/mode/markdown");
+    
+    //console.log(getAllMethods(editor));
+    
+    makePreview();
+    
+    $('#undo').click(function(){
+        mdi.undo();
+    });
+    
+    $('#redo').click(function(){
+        mdi.redo();
+    });
+    
+    $('#dobold').click(function(){
+        mdi.doBold();
+    });
+    
+    $('#addurl').click(function(){
+        mdi.addUrl();
+    });
+    
+    $('#addimg').click(function(){
+        mdi.addImage();
+    });
+    
+    $('#newdoc').click(function(){
+        mdi.newDoc();
+    });
+    
+    $('#exporthtml').click(function(){
+        text = $('#markdown_preview').html();
+        var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "untitled.html");
+        mdi.focus();
+    });
+    
+    $('#exportmd').click(function(){
+        text = mdi.getWholeText();
+        var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "untitled.md");
+        mdi.focus();
+    });
+    
+    $('#help').click(function(){
+        mdi.focus();
+        print();
+    });
+    
+    mdi.focus();
+    
+    function onSplitterDargEnd() {
+       mdi.resize();
+    }
+
+    $('#markdown_main').split({orientation:'vertical', limit:300, onDragEnd:onSplitterDargEnd});
+    
+    //semantic-ui
+    $('.ui.dropdown').dropdown();
+    $('#help').popup();
+</script>
+
+{% endblock %}

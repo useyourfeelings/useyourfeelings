@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class="ui three column grid">
+    <div class="column"></div>
+        <div class=" column">
+            {{ wtf.basic_form(form) }}
+            <form method="GET" action="{{ url_for('auth.login') }}">
+                <input type = "submit" class="ui blue submit button" value="LOG IN">
+            </form>
+            <form method="GET" action="{{ url_for('auth.password_reset_request') }}">
+                <input type = "submit" class="ui red submit button" value="FORGET PASSWORD?">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

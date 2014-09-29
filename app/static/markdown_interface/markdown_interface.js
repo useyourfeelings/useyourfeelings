@@ -1,6 +1,21 @@
+/* 
+ * editor interface
+ * 
+ * 201409300350 xcc
+ * 
+ */
+
 function MDI(editor){
     this.editor = editor;
     this.doc = editor.session.getDocument();
+    
+    if(typeof(Storage) !== "undefined") {
+        // Code for localStorage/sessionStorage.
+        this.canUseStorage = true;
+    } else {
+        // Sorry! No Web Storage support..
+        this.canUseStorage = false;
+    }
 }
 
 function getAllMethods(object) {
@@ -114,12 +129,12 @@ MDI.prototype.newDoc = function (){
     this.editor.focus();
 }
 
-
 MDI.prototype.getWholeText = function (){
-    //this.editor.selectAll();
-    //return this.editor.getSelectedText();
     return this.editor.getValue();
-    //this.editor.focus();
+}
+
+MDI.prototype.setWholeText = function (text){
+    this.editor.setValue(text);
 }
 
 MDI.prototype.resize = function (){
@@ -148,4 +163,37 @@ MDI.prototype.setTheme = function (setting){
 
 MDI.prototype.setMode = function (setting){
     this.editor.getSession().setMode(setting);
+}
+
+MDI.prototype.loadStorageText = function (){
+    if(!this.canUseStorage)
+        return;
+    
+    storage = localStorage.getItem("text");
+    if(storage && storage != "")
+        this.setWholeText(storage);
+    
+    this.editor.moveCursorTo(0, 0);
+    
+}
+
+MDI.prototype.saveStorageText = function (){
+    if(!this.canUseStorage)
+        return;
+    
+    localStorage.setItem("text", mdi.getWholeText());
+}
+
+MDI.prototype.saveStorageState = function (){
+    if(!this.canUseStorage)
+        return;
+    
+    this.saveStorageText();
+}
+
+MDI.prototype.loadStorageState = function (){
+    if(!this.canUseStorage)
+        return;
+    
+    this.loadStorageText();
 }

@@ -116,6 +116,14 @@
         });
     }
     
+    
+    
+    //semantic-ui
+    $('.ui.dropdown').dropdown();
+    $('#help').popup();
+    
+    $('#markdown_main').split({orientation:'vertical', limit:300, onDragEnd:onSplitterDargEnd});
+    
     var editor = ace.edit("markdown_editor");
     var mdi = new MDI(editor);
     
@@ -128,14 +136,20 @@
         });
     }
     
-    mdi.setOnChangeCallback(makePreview);
+    function onChange(){
+        makePreview();
+        mdi.saveStorageState();
+    }
+    
     mdi.setUseWrapMode(true);
     mdi.setShowPrintMargin(false);
     mdi.setFontSize(16);
     mdi.setTheme("ace/theme/chrome");
     mdi.setMode("ace/mode/markdown");
+    mdi.loadStorageState();
     
-    //console.log(getAllMethods(editor));
+    mdi.focus();
+    mdi.setOnChangeCallback(onChange);
     
     makePreview();
     
@@ -179,20 +193,12 @@
     
     $('#help').click(function(){
         mdi.focus();
-        print();
-    });
-    
-    mdi.focus();
+        //print();
+    })
     
     function onSplitterDargEnd() {
        mdi.resize();
     }
-
-    $('#markdown_main').split({orientation:'vertical', limit:300, onDragEnd:onSplitterDargEnd});
-    
-    //semantic-ui
-    $('.ui.dropdown').dropdown();
-    $('#help').popup();
 </script>
 
 {% endblock %}

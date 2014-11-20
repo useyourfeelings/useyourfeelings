@@ -128,8 +128,15 @@
     var mdi = new MDI(editor);
     
     var converter = new Markdown.getSanitizingConverter();
+    //converter.autoNewLine = true;
+    function nl2br(text){
+        return text.replace(/\n/g, " <br>\n");
+    }
+    converter.hooks.chain("postSpanGamut", nl2br);
     
     function makePreview(){
+        //alert(mdi.getWholeText());
+        //alert(converter.makeHtml(mdi.getWholeText()));
         $('#markdown_preview').html(converter.makeHtml(mdi.getWholeText()));
         $('pre code').each(function(i, block) {
             hljs.highlightBlock(block);
